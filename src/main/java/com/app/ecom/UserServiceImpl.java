@@ -1,34 +1,40 @@
 package com.app.ecom;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
-
-    private List<User> userlist = new ArrayList<>();
-    private Long nextId = 1L;
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public List<User> getAllUsers() {
-        return userlist;
+        return userRepository.findAll();
     }
 
     @Override
     public void addUser(User user) {
-        user.setId(nextId++);
-        userlist.add(user);
+        userRepository.save(user);
     }
 
     @Override
-    public User getUserById(Long id) {
-        for (User user : userlist) {
-            if (user.getId().equals(id)) {
-                return user;
-            }
-        }
-        return null;
+    public Optional<User> getUserById(Long id) {
+        return userRepository.findById(id);
+    }
+
+    @Override
+    public boolean updateUser(Long id, User updatedUser) {
+        return userRepository.findById(id).map(existingUser -> {
+            existingUser.setFirstName(updatedUser.getFirstName());
+            existingUser.setLastName(updatedUser.getLastName());
+            userRepository.save(existingUser);
+            return true;
+        }).orElse(false);
     }
 }
