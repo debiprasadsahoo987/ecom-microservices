@@ -1,5 +1,8 @@
-package com.app.ecom;
+package com.app.ecom.controller;
 
+import com.app.ecom.payload.UserRequestDTO;
+import com.app.ecom.payload.UserResponseDTO;
+import com.app.ecom.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,24 +18,24 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<String> addUser(@RequestBody User user) {
-        userService.addUser(user);
+    public ResponseEntity<String> addUser(@RequestBody UserRequestDTO userRequestDTO) {
+        userService.addUser(userRequestDTO);
         return new ResponseEntity<>("User added successfully",  HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id) {
         return  userService.getUserById(id).map(ResponseEntity::ok).orElseGet(()->ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateUser(@PathVariable Long id,  @RequestBody User updatedUser) {
-        boolean updated = userService.updateUser(id, updatedUser);
+    public ResponseEntity<String> updateUser(@PathVariable Long id,  @RequestBody UserRequestDTO updatedUserRequestDTO) {
+        boolean updated = userService.updateUser(id, updatedUserRequestDTO);
         if(updated) {
             return new ResponseEntity<>("User updated successfully", HttpStatus.OK);
         }
