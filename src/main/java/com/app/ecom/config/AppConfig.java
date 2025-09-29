@@ -9,6 +9,8 @@ public class AppConfig {
 
     @Bean
     public ModelMapper modelMapper() {
-        return new ModelMapper();
+        ModelMapper mm = new ModelMapper();
+        mm.getConfiguration().setSkipNullEnabled(true); // ignore nulls on update
+        return mm;
     }
 }
