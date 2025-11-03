@@ -1,6 +1,21 @@
 spring:
   application:
     name: user-service
+  data:
+    mongodb:
+#      uri: mongodb+srv://rockingdebi2000_db_user:MlwxOMcNhtnyWmfN@user-data.71andg2.mongodb.net/?appName=user-data
+      uri: mongodb://localhost:27017/userdb
+      database: userdb
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/userdb
+#    username: postgres
+#    password: root
+#  jpa:
+#    database: postgresql
+#    show-sql: true
+#    hibernate:
+#      ddl-auto: update
+#    database-platform: org.hibernate.dialect.PostgreSQLDialect
 #  h2:
 #    console:
 #      enabled: true
@@ -13,16 +28,6 @@ spring:
 #        format_sql: true
 #    hibernate:
 #        ddl-auto: create
-  datasource:
-    url: jdbc:postgresql://localhost:5432/ecom-microservices
-    username: postgres
-    password: root
-  jpa:
-    database: postgresql
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
 server:
   port: 8082
 

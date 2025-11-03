@@ -29,12 +29,12 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id) {
+    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable String id) {
         return  userService.getUserById(id).map(ResponseEntity::ok).orElseGet(()->ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateUser(@PathVariable Long id,  @RequestBody UserRequestDTO updatedUserRequestDTO) {
+    public ResponseEntity<String> updateUser(@PathVariable String id,  @RequestBody UserRequestDTO updatedUserRequestDTO) {
         boolean updated = userService.updateUser(id, updatedUserRequestDTO);
         if(updated) {
             return new ResponseEntity<>("User updated successfully", HttpStatus.OK);

@@ -31,13 +31,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserResponseDTO> getUserById(Long id) {
-        return userRepository.findById(id).map(user -> modelMapper.map(user, UserResponseDTO.class));
+    public Optional<UserResponseDTO> getUserById(String id) {
+        return userRepository.findById(String.valueOf(id)).map(user -> modelMapper.map(user, UserResponseDTO.class));
     }
 
     @Override
-    public boolean updateUser(Long id, UserRequestDTO dto) {
-        return userRepository.findById(id).map(user -> {
+    public boolean updateUser(String id, UserRequestDTO dto) {
+        return userRepository.findById(String.valueOf(id)).map(user -> {
             // Option A: manual null-safe updates
             if (dto.getFirstName() != null) user.setFirstName(dto.getFirstName());
             if (dto.getLastName()  != null) user.setLastName(dto.getLastName());
