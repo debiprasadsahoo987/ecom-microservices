@@ -4,6 +4,7 @@ import com.ecom.app.product.payload.ProductRequestDTO;
 import com.ecom.app.product.payload.ProductResponseDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductService {
     ProductResponseDTO addProduct(ProductRequestDTO productRequestDTO);
@@ -15,4 +16,6 @@ public interface ProductService {
     ProductResponseDTO deleteProduct(Long id);
 
     List<ProductResponseDTO> searchProducts(String keyword);
+
+    Optional<ProductResponseDTO> getProductById(String id);
 }
