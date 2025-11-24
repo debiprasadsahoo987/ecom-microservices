@@ -6,11 +6,11 @@ import com.ecom.app.order.payload.CartItemRequest;
 import java.util.List;
 
 public interface CartService {
-    boolean addToCart(Long userId, CartItemRequest request);
+    boolean addToCart(String userId, CartItemRequest request);
 
-    boolean deleteItemFromCart(Long userId, Long productId);
+    boolean deleteItemFromCart(String userId, Long productId);
 
-    List<CartItem> getCart(Long userId);
+    List<CartItem> getCart(String userId);
 
-    void clearCart(Long userId);
+    void clearCart(String userId);
 }

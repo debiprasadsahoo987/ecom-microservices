@@ -22,7 +22,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Optional<OrderResponseDTO> createOrder(String userId) {
 
-        List<CartItem> cartItems = cartService.getCart(Long.valueOf(userId));
+        List<CartItem> cartItems = cartService.getCart(userId);
         if(cartItems.isEmpty()){
             return Optional.empty();
         }
@@ -46,7 +46,7 @@ public class OrderServiceImpl implements OrderService {
 
         Order savedOrder = orderRepository.save(order);
 
-        cartService.clearCart(Long.valueOf(userId));
+        cartService.clearCart(userId);
 
         return Optional.of(modelMapper.map(savedOrder, OrderResponseDTO.class));
     }

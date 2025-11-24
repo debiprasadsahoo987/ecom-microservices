@@ -19,7 +19,7 @@ public class CartController {
 
     @PostMapping
     public ResponseEntity<String> addToCart(@RequestHeader("X-User-ID") String userId, @RequestBody CartItemRequest request) {
-        if (!cartService.addToCart(Long.valueOf(userId), request)) {
+        if (!cartService.addToCart(userId, request)) {
             return new ResponseEntity<>("Unable to add product to the cart", HttpStatus.BAD_REQUEST);
         }
         ;
@@ -31,12 +31,12 @@ public class CartController {
             @RequestHeader("X-User-ID") String userId,
             @PathVariable Long productId
     ) {
-        boolean deleted = cartService.deleteItemFromCart(Long.valueOf(userId), productId);
+        boolean deleted = cartService.deleteItemFromCart(userId, productId);
         return deleted ? new ResponseEntity<>("Item removed from the cart", HttpStatus.OK) : new ResponseEntity<>("Unable to remove product from the cart", HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping
     public ResponseEntity<List<CartItem>> getCart(@RequestHeader("X-User-ID") String userId) {
-        return new ResponseEntity<>(cartService.getCart(Long.valueOf(userId)), HttpStatus.OK);
+        return new ResponseEntity<>(cartService.getCart(userId), HttpStatus.OK);
     }
 }

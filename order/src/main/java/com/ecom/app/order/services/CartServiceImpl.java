@@ -1,7 +1,11 @@
 package com.ecom.app.order.services;
 
+import com.ecom.app.order.clients.ProductServiceClient;
+import com.ecom.app.order.clients.UserServiceClient;
 import com.ecom.app.order.models.CartItem;
 import com.ecom.app.order.payload.CartItemRequest;
+import com.ecom.app.order.payload.ProductResponseDTO;
+import com.ecom.app.order.payload.UserResponseDTO;
 import com.ecom.app.order.repository.CartItemRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,18 +22,20 @@ public class CartServiceImpl implements CartService {
 //    private ProductRepository productRepository;
     @Autowired
     private CartItemRepository cartItemRepository;
+    @Autowired
+    private ProductServiceClient productServiceClient;
+    @Autowired
+    private UserServiceClient userServiceClient;
 //    @Autowired
 //    private UserRepository userRepository;
 
     @Override
-    public boolean addToCart(Long userId, CartItemRequest request) {
-//        Optional<Product> productOpt = productRepository.findById(request.getProductId());
-//        if (productOpt.isEmpty()) return false;
-//        Product product = productOpt.get();
-//        if (product.getStockQuantity() < request.getQuantity()) return false;
-//        Optional<User> userOpt = userRepository.findById(Long.valueOf(userId));
-//        if (userOpt.isEmpty()) return false;
-//        User user = userOpt.get();
+    public boolean addToCart(String userId, CartItemRequest request) {
+        ProductResponseDTO productResponseDTO = productServiceClient.getProductDetails(String.valueOf(request.getProductId()));
+        if (productResponseDTO==null || productResponseDTO.getStockQuantity() < request.getQuantity()) return false;
+
+        UserResponseDTO userResponseDTO = userServiceClient.getUserDetails(String.valueOf(userId));
+        if (userResponseDTO==null) return false;
 
         CartItem existingCartItem = cartItemRepository.findByUserIdAndProductId(userId, request.getProductId());
         if (existingCartItem != null) {
@@ -50,7 +56,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public boolean deleteItemFromCart(Long userId, Long productId) {
+    public boolean deleteItemFromCart(String userId, Long productId) {
         CartItem cartItem = cartItemRepository.findByUserIdAndProductId(userId, productId);
 
         if(cartItem != null) {
@@ -61,12 +67,12 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public List<CartItem> getCart(Long userId) {
+    public List<CartItem> getCart(String userId) {
         return cartItemRepository.findByUserId(userId);
     }
 
     @Override
-    public void clearCart(Long userId) {
+    public void clearCart(String userId) {
         cartItemRepository.deleteByUserId(userId);
     }
 }
